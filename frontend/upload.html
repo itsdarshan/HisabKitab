@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HisabKitab – Upload Statement</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">💰 HisabKitab</div>
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="upload.html" class="active">📤 Upload</a>
+            <a href="transactions.html">📋 Transactions</a>
+            <a href="analytics.html">📈 Analytics</a>
+            <div class="spacer"></div>
+            <div style="color:var(--text-muted);font-size:.85rem;padding:8px 14px;" id="user-display"></div>
+            <a href="#" class="logout-btn" onclick="api.logout()">🚪 Logout</a>
+        </nav>
+
+        <!-- Main -->
+        <div class="main-content">
+            <h2 style="margin-bottom:24px;">Upload Bank Statement</h2>
+
+            <!-- Upload area -->
+            <div class="card">
+                <div class="upload-area" id="upload-area">
+                    <h3>📄 Drop your PDF here</h3>
+                    <p>or click to browse</p>
+                    <input type="file" id="file-input" accept=".pdf" class="hidden">
+                </div>
+                <p class="mt-8" style="font-size:.85rem;color:var(--text-muted);">
+                    Supported format: PDF bank statements. Each page will be converted to an image and sent to the
+                    vision LLM for transaction extraction.
+                </p>
+            </div>
+
+            <!-- Import jobs -->
+            <div class="card" style="margin-top:24px;">
+                <h3 style="margin-bottom:16px;">Import History</h3>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>File</th>
+                                <th>Pages</th>
+                                <th>Status</th>
+                                <th>Error</th>
+                                <th>Uploaded</th>
+                                <th>Completed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobs-tbody">
+                            <tr><td colspan="6" class="text-center"><div class="spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/toast.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/imports.js"></script>
+    <script>imports.init();</script>
+</body>
+</html>

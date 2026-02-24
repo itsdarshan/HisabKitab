@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HisabKitab – Analytics</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">💰 HisabKitab</div>
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="upload.html">📤 Upload</a>
+            <a href="transactions.html">📋 Transactions</a>
+            <a href="analytics.html" class="active">📈 Analytics</a>
+            <div class="spacer"></div>
+            <div style="color:var(--text-muted);font-size:.85rem;padding:8px 14px;" id="user-display"></div>
+            <a href="#" class="logout-btn" onclick="api.logout()">🚪 Logout</a>
+        </nav>
+
+        <!-- Main -->
+        <div class="main-content">
+            <div class="flex-between mb-16">
+                <h2>Analytics</h2>
+                <div style="display:flex;gap:8px;align-items:flex-end;">
+                    <div class="form-group" style="margin:0;">
+                        <label>From</label>
+                        <input type="date" id="analytics-date-from">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label>To</label>
+                        <input type="date" id="analytics-date-to">
+                    </div>
+                    <button id="apply-analytics-filters">Apply</button>
+                </div>
+            </div>
+
+            <!-- Cashflow -->
+            <div class="stat-grid" id="cashflow-stats">
+                <div class="stat-card"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Monthly trend -->
+            <div class="card">
+                <h3 style="margin-bottom:12px;">Monthly Trend</h3>
+                <div id="monthly-chart"></div>
+                <div id="monthly-table" class="mt-16 table-wrap"></div>
+            </div>
+
+            <!-- Category breakdown -->
+            <div class="card" style="margin-top:24px;">
+                <h3 style="margin-bottom:12px;">Spending by Category</h3>
+                <div id="category-table" class="table-wrap"></div>
+            </div>
+
+            <!-- Merchant ranking -->
+            <div class="card" style="margin-top:24px;">
+                <h3 style="margin-bottom:12px;">Top Merchants</h3>
+                <div id="merchant-table" class="table-wrap"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/toast.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/analytics.js"></script>
+    <script>analytics.init();</script>
+</body>
+</html>

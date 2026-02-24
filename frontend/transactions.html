@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HisabKitab – Transactions</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">💰 HisabKitab</div>
+            <a href="dashboard.html">📊 Dashboard</a>
+            <a href="upload.html">📤 Upload</a>
+            <a href="transactions.html" class="active">📋 Transactions</a>
+            <a href="analytics.html">📈 Analytics</a>
+            <div class="spacer"></div>
+            <div style="color:var(--text-muted);font-size:.85rem;padding:8px 14px;" id="user-display"></div>
+            <a href="#" class="logout-btn" onclick="api.logout()">🚪 Logout</a>
+        </nav>
+
+        <!-- Main -->
+        <div class="main-content">
+            <h2 style="margin-bottom:24px;">Transactions</h2>
+
+            <!-- Filters -->
+            <div class="card mb-16">
+                <div class="filters">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" id="filter-search" placeholder="Description or merchant…">
+                    </div>
+                    <div class="form-group">
+                        <label>Merchant</label>
+                        <input type="text" id="filter-merchant" placeholder="Merchant name…">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="filter-category"><option value="">All</option></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select id="filter-type">
+                            <option value="">All</option>
+                            <option value="debit">Debit</option>
+                            <option value="credit">Credit</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Date From</label>
+                        <input type="date" id="filter-date-from">
+                    </div>
+                    <div class="form-group">
+                        <label>Date To</label>
+                        <input type="date" id="filter-date-to">
+                    </div>
+                    <div class="form-group">
+                        <label>Min Amount</label>
+                        <input type="number" id="filter-amount-min" step="0.01" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Amount</label>
+                        <input type="number" id="filter-amount-max" step="0.01" placeholder="999999">
+                    </div>
+                    <div class="form-group" style="display:flex;gap:8px;align-self:flex-end;">
+                        <button id="apply-filters">Apply</button>
+                        <button id="reset-filters" class="btn-outline">Reset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk actions bar -->
+            <div class="card mb-16" id="bulk-bar" style="display:none;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <span id="bulk-count" style="font-weight:600;">0 selected</span>
+                    <button class="btn-sm btn-danger" onclick="txns.bulkDeleteSelected()">🗑 Delete Selected</button>
+                    <button class="btn-sm btn-outline" onclick="txns.bulkDeleteFiltered()" style="border-color:var(--danger);color:var(--danger);">Delete All Matching Filters</button>
+                    <button class="btn-sm btn-outline" onclick="txns.clearSelection()">Cancel</button>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card">
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:40px;"><input type="checkbox" id="select-all" onclick="txns.toggleSelectAll(this)"></th>
+                                <th style="cursor:pointer" onclick="txns.sort('date')">Date ↕</th>
+                                <th>Description</th>
+                                <th style="cursor:pointer" onclick="txns.sort('merchant')">Merchant ↕</th>
+                                <th>Category</th>
+                                <th style="cursor:pointer" onclick="txns.sort('amount')" class="text-right">Amount ↕</th>
+                                <th>Type</th>
+                                <th class="text-right">Balance</th>
+                                <th>Currency</th>
+                            </tr>
+                        </thead>
+                        <tbody id="txn-tbody">
+                            <tr><td colspan="9" class="text-center"><div class="spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/toast.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/transactions.js"></script>
+    <script>txns.init();</script>
+</body>
+</html>

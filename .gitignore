@@ -1,0 +1,50 @@
+# ── Python ───────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.db
+
+# ── Virtual environments ──────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+
+# ── Environment / secrets ─────────────────────────────
+.env
+*.env.local
+
+# ── Database ─────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Uploads & generated images ───────────────────────
+backend/uploads/
+backend/converted_images/
+
+# ── Logs ─────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDEs ─────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# ── uv ───────────────────────────────────────────────
+.uv/
+uv.lock

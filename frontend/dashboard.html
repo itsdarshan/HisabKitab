@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HisabKitab – Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">💰 HisabKitab</div>
+            <a href="dashboard.html" class="active">📊 Dashboard</a>
+            <a href="upload.html">📤 Upload</a>
+            <a href="transactions.html">📋 Transactions</a>
+            <a href="analytics.html">📈 Analytics</a>
+            <div class="spacer"></div>
+            <div style="color:var(--text-muted);font-size:.85rem;padding:8px 14px;" id="user-display"></div>
+            <a href="#" class="logout-btn" onclick="api.logout()">🚪 Logout</a>
+        </nav>
+
+        <!-- Main -->
+        <div class="main-content">
+            <h2 style="margin-bottom:24px;">Dashboard</h2>
+
+            <!-- Cashflow summary -->
+            <div class="stat-grid" id="dash-stats">
+                <div class="stat-card"><div class="spinner"></div></div>
+            </div>
+
+            <!-- Recent transactions -->
+            <div class="card">
+                <div class="flex-between mb-16">
+                    <h3>Recent Transactions</h3>
+                    <a href="transactions.html" class="btn btn-sm btn-outline">View All →</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Date</th><th>Description</th><th>Merchant</th><th class="text-right">Amount</th><th>Type</th></tr>
+                        </thead>
+                        <tbody id="dash-txn-tbody">
+                            <tr><td colspan="5" class="text-center"><div class="spinner"></div></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick links -->
+            <div style="display:flex;gap:12px;margin-top:24px;">
+                <a href="upload.html" class="btn">📤 Upload Statement</a>
+                <a href="analytics.html" class="btn btn-outline">📈 View Analytics</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/toast.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        auth.guard();
+        auth.setUserInfo();
+
+        (async () => {
+            // Cashflow
+            try {
+                const cf = await api.get("/analytics/cashflow");
+                const fmt = v => (v ?? 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
+                document.getElementById("dash-stats").innerHTML = `
+                    <div class="stat-card"><div class="value" style="color:var(--success)">$${fmt(cf.total_income)}</div><div class="label">Total Income</div></div>
+                    <div class="stat-card"><div class="value" style="color:var(--danger)">$${fmt(cf.total_expense)}</div><div class="label">Total Expense</div></div>
+                    <div class="stat-card"><div class="value" style="color:${cf.net>=0?'var(--success)':'var(--danger)'}">$${fmt(cf.net)}</div><div class="label">Net</div></div>
+                `;
+            } catch { document.getElementById("dash-stats").innerHTML = '<p style="color:var(--text-muted)">No data yet</p>'; }
+
+            // Recent transactions
+            try {
+                const data = await api.get("/transactions?per_page=10&sort_by=date&sort_dir=desc");
+                const tbody = document.getElementById("dash-txn-tbody");
+                if (!data.transactions.length) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="text-center" style="color:var(--text-muted)">No transactions yet. <a href="upload.html">Upload a statement</a> to get started.</td></tr>';
+                } else {
+                    const fmt = v => Number(v).toLocaleString(undefined, { minimumFractionDigits: 2 });
+                    tbody.innerHTML = data.transactions.map(t => `
+                        <tr>
+                            <td>${t.date}</td>
+                            <td>${t.description || '—'}</td>
+                            <td>${t.merchant || '—'}</td>
+                            <td class="text-right">${fmt(t.amount)}</td>
+                            <td><span class="badge badge-${t.txn_type}">${t.txn_type}</span></td>
+                        </tr>
+                    `).join("");
+                }
+            } catch { }
+        })();
+    </script>
+</body>
+</html>
