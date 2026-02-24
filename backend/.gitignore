@@ -1,0 +1,6 @@
+.env
+__pycache__/
+converted_images/
+uploads/
+
+*.db
