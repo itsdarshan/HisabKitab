@@ -1,6 +1,13 @@
-# 💰 HisabKitab – Finance Tracker
+# 💰 HisabKitab – Personal Intelligent Finance Companion
 
 A full-stack finance tracking application that lets you upload bank statement PDFs, extract transactions using a vision LLM (Ollama or LM Studio), and analyse your spending with interactive dashboards.
+
+
+## Dashboard
+![image1](images/ss4.png)
+
+## Transactions
+![image1](images/ss2.png)
 
 ---
 
